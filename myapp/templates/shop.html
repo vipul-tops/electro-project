@@ -1,0 +1,210 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+		
+		<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->	
+				<div class="row">
+					<div class="col-md-12">
+						<ul class="breadcrumb-tree">
+							<li><a href="/">Home</a></li>
+							<li><a href="{% url 'shop' %}">All Categories</a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /BREADCRUMB -->
+
+		<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<!-- ASIDE -->
+					<div id="aside" class="col-md-3">
+						<!-- aside Widget -->
+						<div class="aside">
+							<h3 class="aside-title">Categories</h3>
+							<div class="checkbox-filter">
+
+								<div class="input-checkbox">
+									<label for="category-1">Laptops</label>
+								</div>
+								<div class="input-checkbox">
+									<label for="category-1">Camera</label>
+								</div>
+								<div class="input-checkbox">
+									<label for="category-1">Accessories</label>
+								</div>
+								
+							</div>
+						</div>
+						<!-- /aside Widget -->
+
+						
+						<!-- aside Widget -->
+						<div class="aside">
+							<h3 class="aside-title">Brand</h3>
+							<div class="checkbox-filter">
+								<div class="input-checkbox">
+									<!-- <input type="checkbox" id="brand-1"> -->
+									<label for="brand-1">SAMSUNG</label>
+								</div>
+								<div class="input-checkbox">
+									<!-- <input type="checkbox" id="brand-1"> -->
+									<label for="brand-1">LENOVO</label>
+								</div>
+								<div class="input-checkbox">
+									<!-- <input type="checkbox" id="brand-1"> -->
+									<label for="brand-1">HP</label>
+								</div>
+								<div class="input-checkbox">
+									<label for="brand-1">SONY</label>
+								</div>
+								<div class="input-checkbox">
+									<label for="brand-1">DELL</label>
+								</div>
+								<div class="input-checkbox">
+									<label for="brand-1">APPLE</label>
+								</div>
+								<div class="input-checkbox">
+									<label for="brand-1">NIKON</label>
+								</div>
+								<div class="input-checkbox">
+									<label for="brand-1">CANON</label>
+								</div>
+								<div class="input-checkbox">
+									<label for="brand-1">PANASONIC</label>
+								</div>
+								<div class="input-checkbox">
+									<label for="brand-1">ASUS</label>
+								</div>
+								<div class="input-checkbox">
+									<label for="brand-1">REDMI</label>
+								</div>
+
+								
+							</div>
+						</div>
+						<!-- /aside Widget -->
+					</div>
+					<!-- /ASIDE -->
+
+					<!-- STORE -->
+					<div id="store" class="col-md-9">
+
+						<!-- store products -->
+						<div class="row">
+							<!-- product -->
+							{% for i in products %}
+							<div class="col-md-4 col-xs-6">
+								<div class="product">
+									<div class="product-img">
+										<img src="{{i.product_image.url}}" width="250px" height="250px" alt="">
+									</div>
+									<div class="product-body">
+										<p class="product-category">{{i.product_category}}</p>
+										<h3 class="product-name"><a href="#">{{i.product_name}}</a></h3>
+										<h4 class="product-price">{{i.product_price}}</h4>
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										</div>
+										
+									</div>
+									<div class="add-to-cart">
+										<a href="{% url 'product-details' pk=i.pk %}"><button type="button" class="add-to-cart-btn"><i class="fa fa-eye"></i>Product Details</button></a>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+							<!-- /product -->
+						</div>
+						<!-- /store products -->
+
+						<!-- store bottom filter -->
+						<div class="store-filter clearfix">
+							<span class="store-qty">Showing 20-100 products</span>
+							<ul class="store-pagination">
+								<li class="active">1</li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+							</ul>
+						</div>
+						<!-- /store bottom filter -->
+					</div>
+					<!-- /STORE -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
+	<script>
+	$(document).ready(function() {
+    // Get references to the DOM elements
+    var $priceSlider = $("#price-slider");
+    var $priceMin = $("#price-min");
+    var $priceMax = $("#price-max");
+
+    // Set the initial values for the price range
+    var minPrice = parseFloat($priceMin.val()) || 0;
+    var maxPrice = parseFloat($priceMax.val()) || 1000;
+
+    // Initialize the price slider
+    $priceSlider.slider({
+        range: true,
+        min: 0,
+        max: 1000,  // Adjust this to match your price range
+        values: [minPrice, maxPrice],
+        slide: function(event, ui) {
+            // Update the input fields as the slider is moved
+            $priceMin.val(ui.values[0]);
+            $priceMax.val(ui.values[1]);
+        }
+    });
+
+    // Handle changes in the input fields
+    $priceMin.change(function() {
+        var newMin = parseFloat($priceMin.val()) || 0;
+        var currentMax = $priceSlider.slider("values", 1);
+
+        if (newMin < currentMax) {
+            $priceSlider.slider("values", 0, newMin);
+        }
+    });
+
+    $priceMax.change(function() {
+        var newMax = parseFloat($priceMax.val()) || 1000;
+        var currentMin = $priceSlider.slider("values", 0);
+
+        if (newMax > currentMin) {
+            $priceSlider.slider("values", 1, newMax);
+        }
+    });
+});
+	</script>
+
+
+	</body>
+</html>
+{% endblock %}

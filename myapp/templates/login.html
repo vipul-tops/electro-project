@@ -1,0 +1,85 @@
+ {% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+		<div id="breadcrumb" class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<h3 class="breadcrumb-header">Log In</h3>
+						<ul class="breadcrumb-tree">
+							<li><a href="#">Home</a></li>
+							<li class="active">Log In</li>
+						</ul>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /BREADCRUMB -->
+
+		<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+
+					<div class="col-md-7">
+						{% if msg %}
+							<b style="color:red;">{{msg}}</b>
+						{% endif %}
+						<!-- Billing Details -->
+						<form name="frm" method="post" action="{% url 'login' %}">
+							{% csrf_token %}
+							<div class="billing-details">
+								
+								<div class="form-group">
+									<input class="input" type="email" id="email" name="email" placeholder="Email">
+									<span id="email_error"></span>
+								</div>
+								<div class="form-group">
+									<input class="input" type="password" name="password" placeholder="Password">
+								</div>
+								
+								<div class="form-group">
+									<input class="btn btn-primary" type="submit" name="action" value="Log In">
+									<a href="#"><input type="button" value="Forgot Password" class="btn btn-info"></a>
+								</div>
+								
+								
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>	
+
+<script>
+    $("#email").change(function(){
+        var email=$(this).val();
+        // alert(email);
+
+        $.ajax({
+            url: '/ajax/validate_email/',
+            data: {
+                'email': email
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (!data.is_taken) {
+                    /*document.getElementById("email").style.border="5px solid red";*/
+                    document.getElementById("email_error").innerHTML="This Email ID Is Not Registered";
+                }else{
+                    /*document.getElementById("email").style.border="5px solid red";*/
+                    document.getElementById("email_error").innerHTML="";
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		
+    </head>
+	<body>
+		<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				
+				{% if msg %}
+					<h2>{{msg}}</h2>
+				{% endif %}
+				<!-- row -->
+				<div class="row">
+
+					<!-- STORE -->
+					<div id="store" class="col-md-12">
+						
+						<!-- store products -->
+						<div class="row">
+							<!-- product -->
+							{% for i in products %}
+							<div class="col-md-3 col-xs-6">
+								<div class="product">
+									<div class="product-img">
+										<img src="{{i.product_image.url}}" width="200px" height="220px" alt="">
+									</div>
+									<div class="product-body">
+										<p class="product-category">{{i.product_category}}</p>
+										<h3 class="product-name"><a href="#">{{i.product_name}}</a></h3>
+										<h4 class="product-price">{{i.product_price}}</h4>
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										</div>
+										
+									</div>
+									<div class="add-to-cart">
+										<a href="{% url 'product-details' pk=i.pk %}"><button type="button" class="add-to-cart-btn"><i class="fa fa-eye"></i>Product Details</button></a>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+							<!-- /product -->
+						</div>
+						<!-- /store products -->
+
+						<!-- store bottom filter -->
+						
+					</div>
+					<!-- /STORE -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
+
+
+	</body>
+</html>
+{% endblock %}
